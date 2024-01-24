@@ -112,6 +112,14 @@ export class RegisterComponent extends CaptchaProtectedComponent implements OnIn
   }
 
   async submit(showToast = true) {
+    if (typeof crypto.subtle === "undefined") {
+      this.platformUtilsService.showToast(
+        "error",
+        "This browser requires HTTPS to use the web vault",
+        "Check the Vaultwarden wiki for details on how to enable it",
+      );
+      return;
+    }
     let email = this.formGroup.value.email;
     email = email.trim().toLowerCase();
     let name = this.formGroup.value.name;
