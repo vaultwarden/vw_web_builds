@@ -69,7 +69,6 @@ import {
   EnterPaymentMethodComponent,
   getBillingAddressFromForm,
 } from "@bitwarden/web-vault/app/billing/payment/components";
-import { tokenizablePaymentMethodToLegacyEnum } from "@bitwarden/web-vault/app/billing/payment/types";
 
 import { OrganizationCreateModule } from "../../admin-console/organizations/create/organization-create.module";
 import { PremiumOrgUpgradeService } from "../individual/upgrade/premium-org-upgrade-payment/services/premium-org-upgrade.service";
@@ -548,6 +547,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
       await this.loadExistingOrganizationData(organizationId);
     }
 
+    /* no need to ask /api/plans because Vaultwarden only supports the free plan
     if (!this.selfHosted) {
       await this.loadPlanData();
     }
@@ -562,6 +562,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
     if (this.hasProvider()) {
       await this.setupProviderConfiguration();
     }
+    end of asking /api/plans in Vaultwarden */
 
     if (!this.createOrganization()) {
       this.upgradeFlowPrefillForm();
@@ -620,6 +621,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   get upgradeRequiresPaymentMethod() {
+    return false; // Vaultwarden is always free
     return (
       this.organization?.productTierType === ProductTierType.Free &&
       !this.showFree() &&
@@ -688,6 +690,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   changedProduct() {
+    return; // no choice of products in Vaultwarden
     const selectedPlan = this.selectablePlans()[0];
 
     if (!selectedPlan) {
@@ -796,12 +799,13 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
     }
 
     // Validate billing form for paid plans during creation
+    /* don't validate in Vaultwarden because we have no plan selected
     if (this.createOrganization() && this.selectedPlan()?.type !== PlanType.Free) {
       this.billingFormGroup.markAllAsTouched();
       if (this.billingFormGroup.invalid) {
         return;
       }
-    }
+    } */
 
     const doSubmit = async (): Promise<string> => {
       let orgId: string;
@@ -920,6 +924,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   private async refreshSalesTax(): Promise<void> {
+    return; // no taxes in Vaultwarden;
     if (
       this.billingFormGroup.controls.billingAddress.invalid ||
       this.selectedPlan()?.type === PlanType.Free
@@ -1054,7 +1059,9 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
     request.name = this.formGroup.controls.name.value ?? "";
     request.billingEmail = this.formGroup.controls.billingEmail.value ?? "";
     request.initiationPath = this.initiationPath();
+    request.planType = PlanType.Free; // always select the free plan in Vaultwarden
 
+    /* there is no plan to select in Vaultwarden
     if (this.selectedPlan()!.type === PlanType.Free) {
       request.planType = PlanType.Free;
     } else {
@@ -1090,6 +1097,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
 
     // Secrets Manager
     this.buildSecretsManagerRequest(request);
+    end plan selection and no support for secret manager in Vaultwarden */
 
     if (this.eligibleCouponIds().length > 0) {
       request.coupons = this.eligibleCouponIds();
@@ -1149,6 +1157,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   private buildSecretsManagerRequest(
     request: OrganizationCreateRequest | OrganizationUpgradeRequest,
   ): void {
+    return; // Vaultwarden does not support SecretsManager
     const formValues = this.secretsManagerForm.value;
 
     request.useSecretsManager = this.planOffersSecretsManager() && (formValues.enabled ?? false);
@@ -1167,6 +1176,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   private upgradeFlowPrefillForm() {
+    return; // Vaultwarden only supports free plan
     if (this.acceptingSponsorship()) {
       this.formGroup.controls.productTier.setValue(ProductTierType.Families);
       this.changedProduct();
