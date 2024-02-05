@@ -57,7 +57,6 @@ import {
   EnterPaymentMethodComponent,
   getBillingAddressFromForm,
 } from "@bitwarden/web-vault/app/billing/payment/components";
-import { tokenizablePaymentMethodToLegacyEnum } from "@bitwarden/web-vault/app/billing/payment/types";
 import {
   OrganizationSubscriptionPlan,
   OrganizationSubscriptionPurchase,
@@ -585,6 +584,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    /* no need to ask /api/plans because Vaultwarden only supports the free plan
     if (!this.selfHosted) {
       await this.loadPlanData();
     }
@@ -593,6 +593,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
 
     this.formGroup.controls.name.addValidators([Validators.required, Validators.maxLength(50)]);
     this.formGroup.controls.billingEmail.addValidators(Validators.required);
+    end of asking /api/plans in Vaultwarden */
 
     this.accountService.activeAccount$
       .pipe(
@@ -612,6 +613,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
 
     this.loading = false;
 
+    /* no secrets manager in vaultwarden
     if (this.enableSecretsManagerByDefault() && this.selectedSecretsManagerPlan()) {
       this.secretsManagerSubscription.patchValue({
         enabled: true,
@@ -619,6 +621,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
         additionalServiceAccounts: 0,
       });
     }
+    end of secrets manager */
   }
 
   ngOnDestroy() {
@@ -682,6 +685,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   changedProduct() {
+    return; // no choice of products in Vaultwarden
     const selectedPlan = this.selectablePlans()[0];
 
     if (!selectedPlan) {
@@ -749,12 +753,13 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
     }
 
     // Validate billing form for paid plans
+    /* don't validate in Vaultwarden because we have no plan selected
     if (this.selectedPlan()?.type !== PlanType.Free) {
       this.billingFormGroup.markAllAsTouched();
       if (this.billingFormGroup.invalid) {
         return;
       }
-    }
+    } */
 
     const doSubmit = async (): Promise<string> => {
       const canUpgradeFromPremium = this.canUpgradeFromPremium();
@@ -910,7 +915,9 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
     request.name = this.formGroup.controls.name.value ?? "";
     request.billingEmail = this.formGroup.controls.billingEmail.value ?? "";
     request.initiationPath = this.initiationPath();
+    request.planType = PlanType.Free; // always select the free plan in Vaultwarden
 
+    /* there is no plan to select in Vaultwarden
     if (this.selectedPlan()!.type === PlanType.Free) {
       request.planType = PlanType.Free;
     } else {
@@ -946,6 +953,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
 
     // Secrets Manager
     this.buildSecretsManagerRequest(request);
+    end plan selection and no support for secret manager in Vaultwarden */
 
     if (this.eligibleCouponIds().length > 0) {
       request.coupons = this.eligibleCouponIds();
@@ -980,6 +988,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   private buildSecretsManagerRequest(request: OrganizationCreateRequest): void {
+    return; // Vaultwarden does not support SecretsManager
     const formValues = this.secretsManagerForm.value;
 
     request.useSecretsManager = this.planOffersSecretsManager() && (formValues.enabled ?? false);
