@@ -195,6 +195,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   };
 
   submitCollectionManagement = async () => {
+    return; // flexible collections are not supported by Vaultwarden
     const request = new OrganizationCollectionManagementUpdateRequest();
     request.limitCollectionCreation =
       this.collectionManagementFormGroup.value.limitCollectionCreation;
