@@ -19,7 +19,6 @@ import {
   singleOrganizationPolicyApplies$,
 } from "@bitwarden/common/admin-console/abstractions/organization/organization.service.abstraction";
 import { PolicyService } from "@bitwarden/common/admin-console/abstractions/policy/policy.service.abstraction";
-import { OrganizationUserType } from "@bitwarden/common/admin-console/enums";
 import { Organization } from "@bitwarden/common/admin-console/models/domain/organization";
 import { AccountService } from "@bitwarden/common/auth/abstractions/account.service";
 import { getUserId } from "@bitwarden/common/auth/services/account.service";
@@ -216,9 +215,7 @@ export class ProductSwitcherService {
         // Check if SM ads should be disabled for any organization
         // SM ads are disabled if the user is a regular User (not Admin or Owner)
         // in an organization that has useDisableSMAdsForUsers enabled
-        const shouldDisableSMAds = orgs.some(
-          (org) => org.useDisableSMAdsForUsers === true && org.type === OrganizationUserType.User,
-        );
+        const shouldDisableSMAds = true; // always hide ads for secret manager in Vaultwarden
 
         const products = {
           pm: {
@@ -290,7 +287,7 @@ export class ProductSwitcherService {
         } else if (!userHasSingleOrgPolicy && !vfo1Enabled) {
           // Offered only while VFO1 is off — flag-on, "Add plan" in Settings
           // replaces the Organizations entry point.
-          other.push(products.orgs);
+          // other.push(products.orgs); no ad for Organizations in Vaultwarden
         }
 
         if (providers.length > 0) {
