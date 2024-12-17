@@ -1,6 +1,12 @@
 <router-outlet></router-outlet>
 <div class="container my-5 text-muted text-center">
   <environment-selector></environment-selector>
-  &copy; {{ year }} Bitwarden Inc. <br />
+  Vaultwarden Web<br />
   {{ "versionNumber" | i18n: version }}
+  <br /><br />
+  <div class="small">
+    A modified version of the Bitwarden&reg; Web Vault for Vaultwarden (an unofficial rewrite of the
+    Bitwarden&reg; server).<br />
+    Vaultwarden is not associated with the Bitwarden&reg; project nor Bitwarden Inc.
+  </div>
 </div>
