@@ -3,7 +3,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { Observable, concatMap, combineLatest } from "rxjs";
+import { Observable, of } from "rxjs";
 
 import { JslibModule } from "@bitwarden/angular/jslib.module";
 import { ApiService } from "@bitwarden/common/abstractions/api.service";
@@ -49,24 +49,8 @@ export class UserLayoutComponent implements OnInit {
 
     await this.syncService.fullSync(false);
 
-    // We want to hide the subscription menu for organizations that provide premium.
-    // Except if the user has premium personally or has a billing history.
-    this.showSubscription$ = combineLatest([
-      this.billingAccountProfileStateService.hasPremiumPersonally$,
-      this.billingAccountProfileStateService.hasPremiumFromAnyOrganization$,
-    ]).pipe(
-      concatMap(async ([hasPremiumPersonally, hasPremiumFromOrg]) => {
-        const isCloud = !this.platformUtilsService.isSelfHost();
-
-        let billing = null;
-        if (isCloud) {
-          // TODO: We should remove the need to call this!
-          billing = await this.apiService.getUserBillingHistory();
-        }
-
-        const cloudAndBillingHistory = isCloud && !billing?.hasNoHistory;
-        return hasPremiumPersonally || !hasPremiumFromOrg || cloudAndBillingHistory;
-      }),
-    );
+    this.hasFamilySponsorshipAvailable$ = of(false); // disable family Sponsorships in Vaultwarden
+    this.showSponsoredFamilies$ = of(false); // disable family Sponsorships in Vaultwarden
+    this.showSubscription$ = of(false); // always hide subscriptions in Vaultwarden
   }
 }
