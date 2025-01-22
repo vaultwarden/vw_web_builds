@@ -8,7 +8,6 @@ config.content = [
   "../../libs/key-management/src/**/*.{html,ts}",
   "../../libs/vault/src/**/*.{html,ts}",
   "../../libs/angular/src/**/*.{html,ts}",
-  "../../bitwarden_license/bit-web/src/**/*.{html,ts}",
 ];
 
 module.exports = config;
