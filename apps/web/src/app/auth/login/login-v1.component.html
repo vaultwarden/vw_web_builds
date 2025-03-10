@@ -67,7 +67,7 @@
   </ng-container>
 
   <div [ngClass]="{ 'tw-hidden': !validatedEmail }">
-    <div class="tw-mb-6 tw-h-28">
+    <div class="tw-mb-6 tw-h-28 master-password-login">
       <bit-form-field class="!tw-mb-1">
         <bit-label>{{ "masterPass" | i18n }}</bit-label>
         <input type="password" bitInput #masterPasswordInput formControlName="masterPassword" />
@@ -87,7 +87,7 @@
       <iframe id="hcaptcha_iframe" height="80" sandbox="allow-scripts allow-same-origin"></iframe>
     </div>
 
-    <div class="tw-mb-3 tw-flex tw-space-x-4">
+    <div class="tw-mb-3 tw-flex tw-space-x-4 master-password-login">
       <button bitButton buttonType="primary" bitFormButton type="submit" [block]="true">
         <span> {{ "loginWithMasterPassword" | i18n }} </span>
       </button>
