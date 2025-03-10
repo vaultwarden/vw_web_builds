@@ -30,6 +30,8 @@ import { Utils } from "@bitwarden/common/platform/misc/utils";
 import { ToastService } from "@bitwarden/components";
 import { PasswordGenerationServiceAbstraction } from "@bitwarden/generator-legacy";
 
+import { defaultRoutes } from "../guards/redirect.guard";
+
 @Directive()
 export class SsoComponent implements OnInit {
   identifier: string;
@@ -383,7 +385,15 @@ export class SsoComponent implements OnInit {
         title: null,
         message: this.i18nService.t("ssoKeyConnectorError"),
       });
+    } else {
+      this.toastService.showToast({
+        variant: "error",
+        title: null,
+        message: e.message,
+      });
     }
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    await this.router.navigate([defaultRoutes.loggedOut]);
   }
 
   private async navigateViaCallbackOrRoute(
