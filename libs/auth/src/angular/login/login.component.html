@@ -22,6 +22,16 @@
         appAutofocus
         (input)="onEmailInput($event)"
         (keyup.enter)="continuePressed()"
+        *ngIf="!(isSSOEnabled$ | async)"
+      />
+      <input
+        type="email"
+        formControlName="email"
+        bitInput
+        appAutofocus
+        (input)="onEmailInput($event)"
+        (keyup.enter)="handleSsoClick()"
+        *ngIf="isSSOEnabled$ | async"
       />
     </bit-form-field>
 
@@ -32,31 +42,42 @@
     </bit-form-control>
 
     <div class="tw-grid tw-gap-3">
-      <!-- Continue button -->
-      <button type="button" bitButton block buttonType="primary" (click)="continuePressed()">
+      <!-- Primary button -->
+      <button
+        type="button"
+        bitButton
+        block
+        buttonType="primary"
+        (click)="continuePressed()"
+        *ngIf="!(isSSOEnabled$ | async)"
+      >
         {{ "continue" | i18n }}
       </button>
 
-      <div class="tw-text-center">{{ "or" | i18n }}</div>
-
-      <!-- Link to Login with Passkey page -->
-      <ng-container *ngIf="isLoginWithPasskeySupported()">
-        <a
-          bitButton
-          block
-          linkType="primary"
-          routerLink="/login-with-passkey"
-          (mousedown)="$event.preventDefault()"
-        >
-          <i class="bwi bwi-passkey tw-mr-1"></i>
-          {{ "logInWithPasskey" | i18n }}
-        </a>
-      </ng-container>
-
-      <!-- Button to Login with SSO -->
-      <button type="button" bitButton block buttonType="secondary" (click)="handleSsoClick()">
-        <i class="bwi bwi-provider tw-mr-1"></i>
+      <button
+        type="button"
+        bitButton
+        block
+        buttonType="primary"
+        (click)="handleSsoClick()"
+        *ngIf="isSSOEnabled$ | async"
+      >
         {{ "useSingleSignOn" | i18n }}
+      </button>
+
+      <div class="tw-text-center" *ngIf="(isSSOEnabled$ | async) && !(isSSOOnly$ | async)">
+        {{ "or" | i18n }}
+      </div>
+
+      <button
+        type="button"
+        bitButton
+        block
+        buttonType="secondary"
+        (click)="continuePressed()"
+        *ngIf="(isSSOEnabled$ | async) && !(isSSOOnly$ | async)"
+      >
+        {{ "loginWithMasterPassword" | i18n }}
       </button>
     </div>
   </div>
