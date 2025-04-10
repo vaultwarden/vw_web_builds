@@ -15,7 +15,7 @@ export interface RedirectRoutes {
   notDecrypted: string;
 }
 
-const defaultRoutes: RedirectRoutes = {
+export const defaultRoutes: RedirectRoutes = {
   loggedIn: "/vault",
   loggedOut: "/login",
   locked: "/lock",
