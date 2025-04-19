@@ -222,6 +222,11 @@ export abstract class BaseMembersComponent<UserView extends UserViewTypes> {
       }
       await confirmUser(publicKey);
     } catch (e) {
+      this.toastService.showToast({
+        variant: "error",
+        title: this.i18nService.t("errorAdminConfirmUser"),
+        message: e.message,
+      });
       this.logService.error(`Handled exception: ${e}`);
     }
   }
