@@ -46,7 +46,10 @@
     {{ "twoStepLoginPolicyUserWarning" | i18n }}
   </bit-callout>
   <ul class="list-group list-group-2fa">
-    <li *ngFor="let p of providers" class="list-group-item d-flex align-items-center">
+    <li
+      *ngFor="let p of providers"
+      class="list-group-item d-flex align-items-center providers-2fa-{{ p.type }}"
+    >
       <div class="logo-2fa d-flex justify-content-center">
         <auth-two-factor-icon [provider]="p.type" [name]="p.name" />
       </div>
