@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from "@angula
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { firstValueFrom } from "rxjs";
 
+import { defaultRoutes } from "@bitwarden/angular/auth/guards/redirect.guard";
 import { JslibModule } from "@bitwarden/angular/jslib.module";
 import {
   LoginStrategyServiceAbstraction,
@@ -48,6 +49,7 @@ import {
 import { PasswordGenerationServiceAbstraction } from "@bitwarden/generator-legacy";
 
 import { SsoClientType, SsoComponentService } from "./sso-component.service";
+
 
 interface QueryParams {
   code?: string;
@@ -553,7 +555,7 @@ export class SsoComponent implements OnInit {
     await this.router.navigate(["lock"]);
   }
 
-  private async handleLoginError(e: unknown) {
+  private async handleLoginError(e: any) {
     this.logService.error(e);
 
     // TODO: Key Connector Service should pass this error message to the logout callback instead of displaying here
@@ -563,7 +565,15 @@ export class SsoComponent implements OnInit {
         title: "",
         message: this.i18nService.t("ssoKeyConnectorError"),
       });
+    } else {
+      this.toastService.showToast({
+        variant: "error",
+        title: null,
+        message: e.message,
+      });
     }
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    await this.router.navigate([defaultRoutes.loggedOut]);
   }
 
   private getOrgIdentifierFromState(state: string): string {
