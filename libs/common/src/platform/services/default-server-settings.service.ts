@@ -18,4 +18,12 @@ export class DefaultServerSettingsService {
       map((settings: ServerSettings) => settings.disableUserRegistration),
     );
   }
+
+  get isSSOEnabled$(): Observable<boolean> {
+    return this.getSettings$().pipe(map((settings: ServerSettings) => settings.ssoEnabled));
+  }
+
+  get isSSOOnly$(): Observable<boolean> {
+    return this.getSettings$().pipe(map((settings: ServerSettings) => settings.ssoOnly));
+  }
 }
