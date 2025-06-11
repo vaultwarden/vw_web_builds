@@ -19,6 +19,7 @@ export function orgSeatLimitReachedValidator(
   occupiedSeatCount: number,
 ): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
+    return null; // no seat limit in Vaultwarden
     if (!control.value?.trim()) {
       return null;
     }
