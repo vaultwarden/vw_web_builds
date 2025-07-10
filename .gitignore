@@ -1,0 +1,56 @@
+# General
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Node
+node_modules
+npm-debug.log
+
+# Build directories
+dist
+build
+.angular/cache
+.flatpak
+.flatpak-repo
+.flatpak-builder
+
+# Testing
+coverage
+junit.xml
+## The "base" root level folder is expected for some local tests that do
+## comparisons between the current branch and a base branch (usually main)
+base/
+
+# Misc
+*.crx
+*.pem
+*.zip
+*.provisionprofile
+
+# Storybook
+documentation.json
+.eslintcache
+storybook-static
+
+# Local app configuration
+apps/**/config/local.json
+
+# Nx
+.nx
