@@ -9,7 +9,6 @@ import { BrowserExtensionIcon, Party } from "@bitwarden/assets/svg";
 import { AccountService } from "@bitwarden/common/auth/abstractions/account.service";
 import { getUserId } from "@bitwarden/common/auth/services/account.service";
 import { PlatformUtilsService } from "@bitwarden/common/platform/abstractions/platform-utils.service";
-import { Utils } from "@bitwarden/common/platform/misc/utils";
 import { StateProvider } from "@bitwarden/common/platform/state";
 import { UnionOfValues } from "@bitwarden/common/vault/types/union-of-values";
 import { getWebStoreUrl } from "@bitwarden/common/vault/utils/get-web-store-url";
@@ -133,12 +132,8 @@ export class SetupExtensionComponent implements OnInit, OnDestroy {
 
   /** Conditionally redirects the user to the vault upon landing on the page. */
   async conditionallyRedirectUser() {
-    const isMobile = Utils.isMobileBrowser;
-
-    if (isMobile) {
-      await this.dismissExtensionPage();
-      await this.router.navigate(["/vault"]);
-    }
+    await this.dismissExtensionPage();
+    await this.router.navigate(["/vault"]);
   }
 
   /** Opens the add extension later dialog */
