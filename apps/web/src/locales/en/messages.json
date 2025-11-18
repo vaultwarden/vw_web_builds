@@ -1273,7 +1273,7 @@
     "message": "Location"
   },
   "loginOrCreateNewAccount": {
-    "message": "Log in or create a new account to access your secure vault."
+    "message": "Log in to access your secure vault."
   },
   "loginWithDevice": {
     "message": "Log in with device"
