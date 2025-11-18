@@ -8,3 +8,21 @@
 
 @import "./vault-filters";
 @import "./plugins.scss";
+
+/* Force the logo to use the images we replaced in the patch */
+.new-logo-themed {
+  content: url('../images/logo-dark@2x.png') !important;
+}
+
+/* Dark Mode Support */
+body.theme_dark .new-logo-themed,
+body.theme_nord .new-logo-themed {
+  content: url('../images/logo-white@2x.png') !important;
+}
+
+/* High Contrast / Accessibility Media Query */
+@media (prefers-color-scheme: dark) {
+  body:not(.theme_light) .new-logo-themed {
+    content: url('../images/logo-white@2x.png') !important;
+  }
+}
