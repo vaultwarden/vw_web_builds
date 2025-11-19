@@ -9,47 +9,80 @@
 @import "./vault-filters";
 @import "./plugins.scss";
 
-/* 1. Target the specific container for the logo on the login screen */
+
+/* --- 1. LOGIN PAGE FIXES --- */
+
 auth-anon-layout bit-icon[aria-label="Bitwarden logo"],
 auth-anon-layout bit-icon[aria-label="Vaultwarden"] {
-  /* Ensure the container has size */
   width: 200px !important;
-  height: 50px !important;
-  display: block !important;
+  height: 100px !important;
 
-  /* Setup background image properties */
+  display: block !important;
   background-size: contain !important;
   background-repeat: no-repeat !important;
   background-position: center !important;
+
+  /* Default to Dark Logo (for light theme login) */
+  background-image: url('../images/logo-dark@2x.png') !important;
 }
 
-/* 2. Hide the original Vaultwarden/Bitwarden SVG inside that container */
+/* Hide the original SVG on login */
 auth-anon-layout bit-icon[aria-label="Bitwarden logo"] svg,
 auth-anon-layout bit-icon[aria-label="Vaultwarden"] svg {
   display: none !important;
 }
 
-/* 3. Apply the correct logo file based on the theme */
 
-/* Default (Light Theme) -> Use Dark Logo */
-auth-anon-layout bit-icon[aria-label="Bitwarden logo"],
-auth-anon-layout bit-icon[aria-label="Vaultwarden"] {
-  background-image: url('../images/logo-dark@2x.png') !important;
-}
+/* --- 2. Sidebar Fixes --- */
 
-/* Dark & Nord Themes -> Use White Logo */
-body.theme_dark auth-anon-layout bit-icon[aria-label="Bitwarden logo"],
-body.theme_nord auth-anon-layout bit-icon[aria-label="Bitwarden logo"],
-body.theme_dark auth-anon-layout bit-icon[aria-label="Vaultwarden"],
-body.theme_nord auth-anon-layout bit-icon[aria-label="Vaultwarden"] {
+/* Target the sidebar navigation logo.
+   Vaultwarden uses 'a:before' to inject their icon. We override that.
+*/
+bit-nav-logo bit-nav-item a:before {
+  content: "" !important;
+  display: block !important;
+
+  /* Sizing for the Sidebar */
+  width: 100% !important;
+  height: 40px !important;
+  /* Standard sidebar height */
+
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+  background-position: left center !important;
+  /* Align left for sidebar */
+
+  /* Default to White Logo (Sidebar is usually dark) */
   background-image: url('../images/logo-white@2x.png') !important;
 }
 
-/* High Contrast / System Dark Mode Preference */
-@media (prefers-color-scheme: dark) {
+/* Hide any underlying text/images in the nav item to be safe */
+bit-nav-logo bit-nav-item a img,
+bit-nav-logo bit-nav-item a svg {
+  display: none !important;
+}
 
-  body:not(.theme_light) auth-anon-layout bit-icon[aria-label="Bitwarden logo"],
-  body:not(.theme_light) auth-anon-layout bit-icon[aria-label="Vaultwarden"] {
+
+/* --- 3. THEME HANDLING (Dark Mode / Light Mode) --- */
+
+/* Login Page Dark Mode 
+   (Auth layout usually needs the white logo on dark background)
+*/
+body.theme_dark auth-anon-layout bit-icon[aria-label="Bitwarden logo"],
+body.theme_nord auth-anon-layout bit-icon[aria-label="Bitwarden logo"] {
+  background-image: url('../images/logo-white@2x.png') !important;
+}
+
+/* Logged In Light Mode 
+   (If the sidebar becomes light in a specific theme, swap to dark logo)
+*/
+body.theme_light bit-nav-logo bit-nav-item a:before {
+  background-image: url('../images/logo-dark@2x.png') !important;
+}
+
+/* High Contrast / System Preference */
+@media (prefers-color-scheme: dark) {
+  body:not(.theme_light) auth-anon-layout bit-icon[aria-label="Bitwarden logo"] {
     background-image: url('../images/logo-white@2x.png') !important;
   }
 }
