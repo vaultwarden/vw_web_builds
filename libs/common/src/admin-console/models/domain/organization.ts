@@ -424,6 +424,6 @@ export class Organization {
   }
 
   get canUseAccessIntelligence() {
-    return this.useAccessIntelligence;
+    return false; // no access intelligence in Vaultwarden
   }
 }
