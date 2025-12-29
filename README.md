@@ -36,9 +36,9 @@ Our scripts and releases which are used by the Vaultwarden project reside in a s
 For each [tagged release of the official Bitwarden® Web vault](https://github.com/bitwarden/clients/releases?q=web-) we create a branch for each version (without the `web-` prefix) to keep track of the changes applied to that upstream version.
 
 Currently the web-vault for the Vaultwarden project is build in [`dani-garcia/bw_web_builds`](https://github.com/dani-garcia/bw_web_builds).
-This is done by referencing this repository as a submodule. Upon a release the build artifacts are stored in a container image and it is this compiled web-vault that is then used in the build process of the `vaultwarden/server` container images.
+This is done by referencing the `vaultwarden/vw_web_builds` repository as a submodule. Upon a release the build artifacts are stored in a container image and it is this compiled web-vault that is then used in the build process of the `vaultwarden/server` container images.
 
-The tags in this repository have an additional patch number added to avoid collisions with our branch name. They don't follow the versioning schema of the `bw_web_builds` repository but are meant to keep track of the specific commit id that was used as a submodule in the other repository.
+The tags in the `vaultwarden/vw_web_builds` repository have an additional patch number added to avoid collisions with the branch names. They don't follow the versioning schema of the `bw_web_builds` repository but are meant to keep track of the specific commit id that was used as a submodule in the other repository.
 
 > [!NOTE]
 > The version referenced in the Dockersettings.yml from Vaultwarden always refers to the built web-vault that is released in the `bw_web_builds` repository.
