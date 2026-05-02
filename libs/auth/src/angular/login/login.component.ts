@@ -595,21 +595,24 @@ export class LoginComponent implements OnInit, OnDestroy {
    * @param event - The event object.
    */
   async handleSsoClick() {
-    // Make sure the email is valid
-    const isEmailValid = this.validateEmail();
-    if (!isEmailValid) {
-      return;
+    // Vaultwarden patch: when the email field is hidden (SSO_ONLY mode) the user has no
+    // way to provide an email and it is not actually needed by the server (single-tenant
+    // SSO uses FAKE_SSO_IDENTIFIER). Only validate when the user has typed something.
+    const email = this.formGroup.value.email ?? "";
+    if (email !== "") {
+      const isEmailValid = this.validateEmail();
+      if (!isEmailValid) {
+        return;
+      }
     }
 
-    // Make sure the email is not empty, for type safety
-    const email = this.formGroup.value.email;
-    if (!email) {
-      this.logService.error("Email is required for SSO");
-      return;
-    }
-
-    // Send the user to SSO, either through routing or through redirecting to the web app
-    await this.loginComponentService.redirectToSsoLogin(email);
+    // Vaultwarden has a single SSO configuration so the org identifier is always
+    // FAKE_SSO_IDENTIFIER. Pass it explicitly so the /sso component skips the
+    // "type your organization SSO identifier" prompt and proceeds to the IdP.
+    await this.loginComponentService.redirectToSsoLoginWithOrganizationSsoIdentifier(
+      email,
+      "00000000-01DC-01DC-01DC-000000000000",
+    );
   }
 
   /**

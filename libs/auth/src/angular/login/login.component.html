@@ -13,7 +13,7 @@
 <form [bitSubmit]="submit" [formGroup]="formGroup">
   <div [ngClass]="{ 'tw-hidden': loginUiState !== LoginUiState.EMAIL_ENTRY }">
     <!-- Email Address input -->
-    <bit-form-field>
+    <bit-form-field class="vw-email-form-field">
       <bit-label>{{ "emailAddress" | i18n }}</bit-label>
       <input
         type="email"
@@ -37,7 +37,7 @@
     </bit-form-field>
 
     <!-- Remember Email input -->
-    <bit-form-control>
+    <bit-form-control class="vw-remember-email">
       <input
         type="checkbox"
         formControlName="rememberEmail"
