@@ -33,6 +33,7 @@
         class="vw-email-sso"
         (input)="onEmailInput($event)"
         (keyup.enter)="handleSsoClick()"
+        [disabled]="!ssoRequired"
       />
     </bit-form-field>
 
