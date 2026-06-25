@@ -639,6 +639,9 @@ export class SsoComponent implements OnInit {
     const storedIdentifier = await this.ssoLoginService.getOrganizationSsoIdentifier();
     if (storedIdentifier != null) {
       this.identifierFormControl.setValue(storedIdentifier);
+    } else {
+      // Lastly, set the dummy value
+      this.identifierFormControl.setValue("00000000-01DC-01DC-01DC-000000000000");
     }
   }
 }
