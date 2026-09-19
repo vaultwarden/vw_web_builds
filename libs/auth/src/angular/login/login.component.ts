@@ -59,6 +59,7 @@ import {
 import { LoginComponentService, PasswordPolicies } from "./login-component.service";
 
 const BroadcasterSubscriptionId = "LoginComponent";
+const VaultwardenSsoIdentifier = "00000000-01DC-01DC-01DC-000000000000";
 
 // FIXME: update to use a const object instead of a typescript enum
 // eslint-disable-next-line @bitwarden/platform/no-enums
@@ -616,6 +617,21 @@ export class LoginComponent implements OnInit, OnDestroy {
    * @param event - The event object.
    */
   async handleSsoClick() {
+    // Vaultwarden sets this CSS property only for SSO_ONLY + DISABLE_2FA_REMEMBER.
+    if (
+      this.clientType === ClientType.Web &&
+      window
+        .getComputedStyle(document.documentElement)
+        .getPropertyValue("--vw-sso-email-optional")
+        .trim() === "1"
+    ) {
+      await this.loginComponentService.redirectToSsoLoginWithOrganizationSsoIdentifier(
+        "",
+        VaultwardenSsoIdentifier,
+      );
+      return;
+    }
+
     // Make sure the email is valid
     const isEmailValid = this.validateEmail();
     if (!isEmailValid) {
