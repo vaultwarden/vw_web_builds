@@ -256,7 +256,7 @@ const routes: Routes = [
         canActivate: [unauthGuardFn()],
         data: {
           pageTitle: {
-            key: "loginPageEmailEntryScreenTitle",
+            key: "logIn",
           },
           pageIcon: VaultIcon,
         } satisfies RouteDataProperties & AnonLayoutWrapperData,
