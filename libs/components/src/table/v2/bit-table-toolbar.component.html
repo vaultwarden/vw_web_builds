@@ -1,7 +1,7 @@
 <!--
   Two rows: the search and any `slot=end` dev controls share the top row; the
   filter chips get their own row beneath. The filter row is the unit that collapses
-  into a single trigger + dialog on small screens (responsive view).
+  into a single trigger + dialog.
   `tw-min-w-0` keeps it from growing past a `bitCollapseOnScroll` grid to fit the chip group.
 -->
 <div class="tw-relative tw-flex tw-flex-col tw-min-w-0">
@@ -9,7 +9,7 @@
     <div [class]="searchClasses()">
       <ng-content select="bit-search"></ng-content>
     </div>
-    <!-- Below md the chip row collapses into this single trigger + applied-count berry. -->
+    <!-- Collapsed, the chip row is replaced by this single trigger + applied-count berry. -->
     @if (showFilterTrigger()) {
       <div class="tw-relative tw-flex-none">
         <button
@@ -44,9 +44,8 @@
     </div>
   </div>
   <!--
-    Wide-viewport filter row: the projected chips and the item count. Hidden (not
-    removed) below md so the chips stay instantiated to back the dialog and the
-    small-screen active-filter chips below.
+    The filter row: the projected chips and the item count. Hidden (not removed) while
+    collapsed so the chips stay instantiated to back the dialog and the active-filter chips below.
   -->
   <div #filterRow bitOverflowList [gap]="8" [items]="overflowItems()" [class]="filterRowClasses()">
     <!--
@@ -86,7 +85,7 @@
       </span>
     }
   </div>
-  <!-- Below md, a single row of just the active filters, overflowing behind a "+N" chip. -->
+  <!-- Collapsed, a single row of just the active filters, overflowing behind a "+N" chip. -->
   @if (collapsed() && activeFilters().length) {
     <div #activeChipRow [class]="activeFilterRowClasses()">
       <bit-chip-group
