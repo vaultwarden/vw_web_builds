@@ -584,7 +584,6 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    /* no need to ask /api/plans because Vaultwarden only supports the free plan
     if (!this.selfHosted) {
       await this.loadPlanData();
     }
@@ -593,7 +592,6 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
 
     this.formGroup.controls.name.addValidators([Validators.required, Validators.maxLength(50)]);
     this.formGroup.controls.billingEmail.addValidators(Validators.required);
-    end of asking /api/plans in Vaultwarden */
 
     this.accountService.activeAccount$
       .pipe(
@@ -1015,6 +1013,7 @@ export class OrganizationPlansComponent implements OnInit, OnDestroy {
    * Also sets the businessOwned form control to true if the current product tier is Enterprise or Teams.
    */
   private async loadPlanData(): Promise<void> {
+    return; // no need to ask /api/plans in Vaultwarden
     const plans = await this.apiService.getPlans();
     this.passwordManagerPlans = plans.data.filter((plan) => !!plan.PasswordManager);
     this.secretsManagerPlans = plans.data.filter((plan) => !!plan.SecretsManager);
